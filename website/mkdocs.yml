@@ -1,6 +1,7 @@
 site_name: CraftyCannon Docs
 site_url: https://docs.crafty599.com/
 site_description: Documentation for CraftyCannon, the macOS menu-bar capture and upload app.
+copyright: "Questions or support: contact@crafty599.com"
 docs_dir: docs
 site_dir: site
 strict: true

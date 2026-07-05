@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Build & test
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+
+      - name: Build and run tests
+        run: |
+          set -o pipefail
+          xcodebuild test \
+            -project CraftyCannon.xcodeproj \
+            -scheme CraftyCannon \
+            -destination 'platform=macOS' \
+            CODE_SIGNING_ALLOWED=NO
+
+  release-build:
+    name: Release build script
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Verifies the actual distribution build path (swiftc + ad-hoc codesign).
+      # No Developer ID identity is available on CI, so build.sh falls back to
+      # ad-hoc signing; this only checks that the shipping build compiles.
+      - name: Run build.sh
+        run: ./build.sh

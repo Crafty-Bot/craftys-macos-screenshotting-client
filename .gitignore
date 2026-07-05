@@ -1,0 +1,25 @@
+.DS_Store
+
+# Swift/Xcode build output
+.build/
+DerivedData/
+*.dSYM/
+*.xcuserstate
+*.profraw
+xcuserdata/
+
+# Packaged app artifacts
+dist/
+*.app
+*.zip
+
+# Local/editor state
+.swiftpm/
+.vscode/
+.idea/
+
+# Docs site (generated)
+website/.venv/
+website/docs/
+website/site/
+website/node_modules/

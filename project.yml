@@ -1,0 +1,42 @@
+name: CraftyCannon
+options:
+  bundleIdPrefix: com.crafty599
+settings:
+  base:
+    MACOSX_DEPLOYMENT_TARGET: "13.0"
+targets:
+  CraftyCannon:
+    type: application
+    platform: macOS
+    sources:
+      - path: Sources
+    resources:
+      - Resources/AppIcon.icns
+      - Resources/FerretCannon.png
+    dependencies:
+      - sdk: Vision.framework
+      - sdk: ImageIO.framework
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.crafty599.craftycannon
+        INFOPLIST_FILE: Resources/Info.plist
+        SWIFT_VERSION: "5.0"
+  CraftyCannonTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - path: Tests
+    dependencies:
+      - target: CraftyCannon
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: com.crafty599.CraftyCannonTests
+schemes:
+  CraftyCannon:
+    build:
+      targets:
+        CraftyCannon: all
+    test:
+      targets:
+        - CraftyCannonTests

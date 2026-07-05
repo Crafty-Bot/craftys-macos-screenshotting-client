@@ -1,0 +1,54 @@
+site_name: CraftyCannon Docs
+site_url: https://docs.crafty599.com/
+site_description: Documentation for CraftyCannon, the macOS menu-bar capture and upload app.
+docs_dir: docs
+site_dir: site
+strict: true
+
+theme:
+  name: material
+  palette:
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: black
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: black
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.indexes
+    - content.code.copy
+    - search.suggest
+    - search.highlight
+    - toc.follow
+
+nav:
+  - Home: index.md
+  - User Guide: USER_GUIDE.md
+  - Features: FEATURES.md
+  - Tools: TOOLS.md
+  - Upload Backends: UPLOAD_BACKENDS.md
+  - Redaction: REDACTION.md
+  - Architecture: ARCHITECTURE.md
+  - Setup: docs/SETUP.md
+  - Update Notes: docs/UPDATE_NOTES.md
+  - Changelog: CHANGELOG.md
+
+markdown_extensions:
+  - tables
+  - toc:
+      permalink: true
+  - admonition
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.inlinehilite

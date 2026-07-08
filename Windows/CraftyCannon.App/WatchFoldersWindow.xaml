@@ -1,0 +1,95 @@
+<Window x:Class="CraftyCannon.App.WatchFoldersWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Watch folders"
+        Width="820"
+        Height="560"
+        MinWidth="760"
+        MinHeight="500"
+        WindowStartupLocation="CenterOwner"
+        Background="#F4F6F8">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="0,0,0,14">
+            <TextBlock Text="Watch folders" FontSize="18" FontWeight="SemiBold" Foreground="#151922" />
+            <TextBlock Text="Auto-uploads files when created or renamed. Debounce and dedupe prevent duplicate uploads."
+                       Margin="0,4,0,0"
+                       Foreground="#5C6675" />
+            <CheckBox x:Name="EnabledBox"
+                      Content="Enable watch folders globally"
+                      Margin="0,12,0,0"
+                      Checked="EnabledBox_Changed"
+                      Unchecked="EnabledBox_Changed" />
+        </StackPanel>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="310" />
+                <ColumnDefinition Width="16" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Background="White" BorderBrush="#D7DCE2" BorderThickness="1" CornerRadius="6" Padding="10">
+                <DockPanel>
+                    <TextBlock DockPanel.Dock="Top" Text="Rules" FontWeight="SemiBold" Margin="0,0,0,8" />
+                    <ListBox x:Name="RulesList" SelectionChanged="RulesList_SelectionChanged" />
+                </DockPanel>
+            </Border>
+
+            <Border Grid.Column="2" Background="White" BorderBrush="#D7DCE2" BorderThickness="1" CornerRadius="6" Padding="14">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Path" VerticalAlignment="Center" Margin="0,0,12,8" />
+                    <DockPanel Grid.Row="0" Grid.Column="1" Margin="0,0,0,8">
+                        <Button Content="Browse..." Width="92" DockPanel.Dock="Right" Margin="8,0,0,0" Click="Browse_Click" />
+                        <TextBox x:Name="PathBox" Height="30" ToolTip="/path/to/folder" />
+                    </DockPanel>
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Filter" VerticalAlignment="Center" Margin="0,0,12,8" />
+                    <TextBox x:Name="FilterBox" Grid.Row="1" Grid.Column="1" Height="30" Margin="0,0,0,8" ToolTip="*, png, jpg, mp4" />
+
+                    <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Vertical" Margin="0,0,0,8">
+                        <CheckBox x:Name="RuleEnabledBox" Content="Rule enabled" Margin="0,0,0,6" />
+                        <CheckBox x:Name="IncludeSubdirectoriesBox" Content="Include subdirectories" />
+                    </StackPanel>
+
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Mode" VerticalAlignment="Center" Margin="0,0,12,8" />
+                    <ComboBox x:Name="ModeBox" Grid.Row="3" Grid.Column="1" Height="30" Margin="0,0,0,8">
+                        <ComboBoxItem Content="auto" Tag="Auto" />
+                        <ComboBoxItem Content="imageOnly" Tag="ImageOnly" />
+                        <ComboBoxItem Content="fileOnly" Tag="FileOnly" />
+                    </ComboBox>
+
+                    <TextBlock Grid.Row="4" Grid.Column="0" Text="Expiry (seconds)" VerticalAlignment="Center" Margin="0,0,12,8" />
+                    <TextBox x:Name="ExpiryBox" Grid.Row="4" Grid.Column="1" Height="30" Margin="0,0,0,8" />
+
+                    <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal" Margin="0,6,0,0">
+                        <Button Content="Add" Width="82" Height="32" Margin="0,0,8,0" Click="Add_Click" />
+                        <Button Content="Update" Width="82" Height="32" Margin="0,0,8,0" Click="Update_Click" />
+                        <Button Content="Remove" Width="82" Height="32" Click="Remove_Click" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <TextBlock Grid.Row="2" x:Name="StatusText" Foreground="#5C6675" Margin="0,12,0,0" TextWrapping="Wrap" />
+    </Grid>
+</Window>

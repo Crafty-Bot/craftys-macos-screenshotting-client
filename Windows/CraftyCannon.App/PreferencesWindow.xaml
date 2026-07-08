@@ -1,0 +1,411 @@
+﻿<Window x:Class="CraftyCannon.App.PreferencesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Preferences" Height="620" Width="920" MinHeight="560" MinWidth="860"
+        WindowStartupLocation="CenterOwner">
+    <Grid Background="#F4F5F7" Margin="18">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="260" />
+            <ColumnDefinition Width="18" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Border Grid.Column="0" Grid.Row="0" Background="White" BorderBrush="#D7DCE2" BorderThickness="1" CornerRadius="6" Padding="12">
+            <DockPanel>
+                <TextBlock DockPanel.Dock="Top" Text="Upload Profiles" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,10" />
+                <StackPanel DockPanel.Dock="Bottom" Margin="0,10,0,0">
+                    <Button Content="Add Zipline" Height="32" Margin="0,0,0,6" Click="AddZipline_Click" />
+                    <Button Content="Add S3" Height="32" Margin="0,0,0,6" Click="AddS3_Click" />
+                    <Button Content="Delete" Height="32" Margin="0,0,0,6" Click="DeleteProfile_Click" />
+                    <Button Content="Set Active" Height="32" Click="SetActive_Click" />
+                </StackPanel>
+                <ListBox x:Name="ProfilesList" DisplayMemberPath="DisplayName" SelectionChanged="ProfilesList_SelectionChanged" />
+            </DockPanel>
+        </Border>
+
+        <Border Grid.Column="2" Grid.Row="0" Background="White" BorderBrush="#D7DCE2" BorderThickness="1" CornerRadius="6" Padding="18">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <TextBlock Text="Destination" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,14" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Name" VerticalAlignment="Center" Margin="0,0,12,8" />
+                        <TextBox x:Name="NameBox" Grid.Row="0" Grid.Column="1" Height="30" Margin="0,0,0,8" />
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Backend" VerticalAlignment="Center" Margin="0,0,12,8" />
+                        <ComboBox x:Name="BackendBox" Grid.Row="1" Grid.Column="1" Height="30" Margin="0,0,0,8" SelectionChanged="BackendBox_SelectionChanged">
+                            <ComboBoxItem Content="Zipline v4" Tag="ZiplineV4" />
+                            <ComboBoxItem Content="S3-compatible" Tag="S3Compatible" />
+                        </ComboBox>
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Endpoint" VerticalAlignment="Center" Margin="0,0,12,8" />
+                        <TextBox x:Name="EndpointBox" Grid.Row="2" Grid.Column="1" Height="30" Margin="0,0,0,8" />
+
+                        <TextBlock x:Name="ZiplineTokenLabel" Grid.Row="3" Grid.Column="0" Text="API token" VerticalAlignment="Center" Margin="0,0,12,8" />
+                        <PasswordBox x:Name="ZiplineTokenBox" Grid.Row="3" Grid.Column="1" Height="30" Margin="0,0,0,8" />
+
+                        <TextBlock x:Name="S3RegionLabel" Grid.Row="4" Grid.Column="0" Text="S3 region" VerticalAlignment="Center" Margin="0,0,12,8" />
+                        <TextBox x:Name="S3RegionBox" Grid.Row="4" Grid.Column="1" Height="30" Margin="0,0,0,8" />
+
+                        <TextBlock x:Name="S3BucketLabel" Grid.Row="5" Grid.Column="0" Text="S3 bucket" VerticalAlignment="Center" Margin="0,0,12,8" />
+                        <TextBox x:Name="S3BucketBox" Grid.Row="5" Grid.Column="1" Height="30" Margin="0,0,0,8" />
+
+                        <TextBlock x:Name="S3PrefixLabel" Grid.Row="6" Grid.Column="0" Text="Key prefix" VerticalAlignment="Center" Margin="0,0,12,8" />
+                        <TextBox x:Name="S3PrefixBox" Grid.Row="6" Grid.Column="1" Height="30" Margin="0,0,0,8" />
+
+                        <CheckBox x:Name="S3PathStyleBox" Grid.Row="7" Grid.Column="1" Content="Use path-style URLs" Margin="0,0,0,8" />
+
+                        <TextBlock x:Name="S3PublicBaseLabel" Grid.Row="8" Grid.Column="0" Text="Public base URL" VerticalAlignment="Center" Margin="0,0,12,8" />
+                        <TextBox x:Name="S3PublicBaseBox" Grid.Row="8" Grid.Column="1" Height="30" Margin="0,0,0,8" />
+
+                        <CheckBox x:Name="S3SignedGetBox" Grid.Row="9" Grid.Column="1" Content="Use signed GET URLs when no public base URL is set" Margin="0,0,0,8" />
+
+                        <TextBlock x:Name="S3ExpiryLabel" Grid.Row="10" Grid.Column="0" Text="Signed GET minutes" VerticalAlignment="Center" Margin="0,0,12,8" />
+                        <TextBox x:Name="S3ExpiryBox" Grid.Row="10" Grid.Column="1" Height="30" Margin="0,0,0,8" />
+
+                        <TextBlock x:Name="S3AccessLabel" Grid.Row="11" Grid.Column="0" Text="Access key ID" VerticalAlignment="Center" Margin="0,0,12,8" />
+                        <PasswordBox x:Name="S3AccessBox" Grid.Row="11" Grid.Column="1" Height="30" Margin="0,0,0,8" />
+
+                        <TextBlock x:Name="S3SecretLabel" Grid.Row="12" Grid.Column="0" Text="Secret access key" VerticalAlignment="Center" Margin="0,0,12,8" />
+                        <PasswordBox x:Name="S3SecretBox" Grid.Row="12" Grid.Column="1" Height="30" Margin="0,0,0,8" />
+
+                        <TextBlock x:Name="S3SessionLabel" Grid.Row="13" Grid.Column="0" Text="Session token" VerticalAlignment="Center" Margin="0,0,12,8" />
+                        <PasswordBox x:Name="S3SessionBox" Grid.Row="13" Grid.Column="1" Height="30" Margin="0,0,0,8" />
+                    </Grid>
+
+                    <TextBlock Text="Secondary S3 mirror" FontWeight="SemiBold" Margin="0,14,0,8" />
+                    <ComboBox x:Name="SecondaryProfileBox" Height="30" DisplayMemberPath="DisplayName" />
+                    <TextBlock Text="Destination routing" FontWeight="SemiBold" Margin="0,18,0,8" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Images" VerticalAlignment="Center" Margin="0,0,12,8" />
+                        <ComboBox x:Name="RoutingImageProfileBox" Grid.Row="0" Grid.Column="1" Height="30" Margin="0,0,0,8" DisplayMemberPath="DisplayName" />
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Files" VerticalAlignment="Center" Margin="0,0,12,8" />
+                        <ComboBox x:Name="RoutingFileProfileBox" Grid.Row="1" Grid.Column="1" Height="30" Margin="0,0,0,8" DisplayMemberPath="DisplayName" />
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Text" VerticalAlignment="Center" Margin="0,0,12,8" />
+                        <ComboBox x:Name="RoutingTextProfileBox" Grid.Row="2" Grid.Column="1" Height="30" Margin="0,0,0,8" DisplayMemberPath="DisplayName" />
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="Shortener" VerticalAlignment="Center" Margin="0,0,12,8" />
+                        <ComboBox x:Name="RoutingShortenerProfileBox" Grid.Row="3" Grid.Column="1" Height="30" Margin="0,0,0,8" DisplayMemberPath="DisplayName" />
+                    </Grid>
+
+                    <TextBlock Text="Extension filters" FontWeight="SemiBold" Margin="0,12,0,8" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="220" />
+                            <ColumnDefinition Width="12" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="90" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <ListBox x:Name="UploaderFiltersList" Grid.Row="0" Grid.Column="0" Grid.RowSpan="4" DisplayMemberPath="DisplayName" SelectionChanged="UploaderFiltersList_SelectionChanged" />
+                        <TextBlock Grid.Row="0" Grid.Column="2" Text="Extensions" VerticalAlignment="Top" Margin="0,0,0,4" />
+                        <TextBox x:Name="UploaderFilterExtensionsBox" Grid.Row="1" Grid.Column="2" Height="30" Margin="0,0,0,8" ToolTip="Comma, space, or semicolon separated extensions" />
+                        <ComboBox x:Name="UploaderFilterProfileBox" Grid.Row="2" Grid.Column="2" Height="30" Margin="0,0,0,8" DisplayMemberPath="DisplayName" />
+                        <StackPanel Grid.Row="3" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button Content="Add" Width="72" Height="30" Margin="0,0,8,0" Click="AddUploaderFilter_Click" />
+                            <Button Content="Update" Width="72" Height="30" Margin="0,0,8,0" Click="UpdateUploaderFilter_Click" />
+                            <Button Content="Delete" Width="72" Height="30" Click="DeleteUploaderFilter_Click" />
+                        </StackPanel>
+                    </Grid>
+
+                    <TextBlock Text="Cloudflare allowlist" FontWeight="SemiBold" Margin="0,18,0,8" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <CheckBox x:Name="CloudflareAllowlistEnabledBox" Grid.Row="0" Grid.Column="1" Content="Keep this device in a Cloudflare IP list" Margin="0,0,0,8" />
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Account ID" VerticalAlignment="Center" Margin="0,0,12,8" />
+                        <TextBox x:Name="CloudflareAccountIdBox" Grid.Row="1" Grid.Column="1" Height="30" Margin="0,0,0,8" />
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="IP list" VerticalAlignment="Center" Margin="0,0,12,8" />
+                        <TextBox x:Name="CloudflareListIdBox" Grid.Row="2" Grid.Column="1" Height="30" Margin="0,0,0,8" />
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="Device name" VerticalAlignment="Center" Margin="0,0,12,8" />
+                        <TextBox x:Name="CloudflareDeviceNameBox" Grid.Row="3" Grid.Column="1" Height="30" Margin="0,0,0,8" />
+                        <TextBlock Grid.Row="4" Grid.Column="0" Text="Refresh minutes" VerticalAlignment="Center" Margin="0,0,12,8" />
+                        <TextBox x:Name="CloudflareIntervalMinutesBox" Grid.Row="4" Grid.Column="1" Height="30" Margin="0,0,0,8" />
+                        <TextBlock Grid.Row="5" Grid.Column="0" Text="API token" VerticalAlignment="Center" Margin="0,0,12,8" />
+                        <PasswordBox x:Name="CloudflareTokenBox" Grid.Row="5" Grid.Column="1" Height="30" Margin="0,0,0,8" ToolTip="Leave blank to keep the saved token" />
+                        <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                            <TextBlock x:Name="CloudflareTokenStatusText" VerticalAlignment="Center" Foreground="#586070" Margin="0,0,12,0" />
+                            <Button Content="Clear token" Width="88" Height="30" Margin="0,0,8,0" Click="ClearCloudflareToken_Click" />
+                            <Button Content="Update now" Width="88" Height="30" Click="UpdateCloudflareNow_Click" />
+                        </StackPanel>
+                    </Grid>
+                    <TextBlock Text="After upload defaults" FontWeight="SemiBold" Margin="0,18,0,8" />
+                    <CheckBox x:Name="CopyUrlAfterUploadBox" Content="Copy URL to clipboard" Margin="0,0,0,6" />
+                    <CheckBox x:Name="CopyImageAfterUploadBox" Content="Copy image to clipboard when possible" Margin="0,0,0,6" />
+                    <CheckBox x:Name="OpenUrlAfterUploadBox" Content="Open URL in browser" Margin="0,0,0,6" />
+                    <CheckBox x:Name="ShowNotificationAfterUploadBox" Content="Show completion notification" Margin="0,0,0,6" />
+
+                    <TextBlock Text="After capture tasks" FontWeight="SemiBold" Margin="0,18,0,8" />
+                    <CheckBox x:Name="AfterCaptureCopyUrlBox" Content="Copy URL to clipboard" Margin="0,0,0,6" />
+                    <CheckBox x:Name="AfterCaptureCopyImageAndUrlBox" Content="Copy image to clipboard when possible" Margin="0,0,0,6" />
+                    <CheckBox x:Name="OpenEditorAfterCaptureBox" Content="Open editor after capture" Margin="0,0,0,6" />
+
+                    <TextBlock Text="Advanced upload defaults" FontWeight="SemiBold" Margin="0,18,0,8" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Redaction policy" VerticalAlignment="Center" Margin="0,0,12,8" />
+                        <ComboBox x:Name="RedactionPolicyBox" Grid.Row="0" Grid.Column="1" Height="30" Margin="0,0,0,8">
+                            <ComboBoxItem Content="Ask before upload" Tag="AskBeforeUpload" />
+                            <ComboBoxItem Content="Auto redact" Tag="AutoRedact" />
+                            <ComboBoxItem Content="Off" Tag="Off" />
+                        </ComboBox>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Palette" VerticalAlignment="Center" Margin="0,0,12,8" />
+                        <ComboBox x:Name="ActivePaletteBox" Grid.Row="1" Grid.Column="1" Height="30" Margin="0,0,0,8" SelectionChanged="ActivePaletteBox_SelectionChanged">
+                            <ComboBoxItem Content="Classic" Tag="classic" />
+                            <ComboBoxItem Content="Nord" Tag="nord" />
+                            <ComboBoxItem Content="Gruvbox" Tag="gruvbox" />
+                            <ComboBoxItem Content="Mono" Tag="mono" />
+                            <ComboBoxItem Content="Mega Dark" Tag="megaDark" />
+                            <ComboBoxItem Content="OLED Black" Tag="oledBlack" />
+                            <ComboBoxItem Content="Rainbow" Tag="rainbow" />
+                            <ComboBoxItem Content="Custom" Tag="custom" />
+                        </ComboBox>
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Default expiry seconds" VerticalAlignment="Center" Margin="0,0,12,8" />
+                        <TextBox x:Name="DefaultFileExpirySecondsBox" Grid.Row="2" Grid.Column="1" Height="30" Margin="0,0,0,8" />
+                        <CheckBox x:Name="EnableOcrIndexingBox" Grid.Row="3" Grid.Column="1" Content="Enable OCR indexing" Margin="0,0,0,8" />
+                        <TextBlock Grid.Row="4" Grid.Column="0" Text="Image format" VerticalAlignment="Center" Margin="0,0,12,8" />
+                        <ComboBox x:Name="ImageUploadFormatBox" Grid.Row="4" Grid.Column="1" Height="30" Margin="0,0,0,8">
+                            <ComboBoxItem Content="PNG" Tag="Png" />
+                            <ComboBoxItem Content="JPEG" Tag="Jpeg" />
+                            <ComboBoxItem Content="GIF" Tag="Gif" />
+                            <ComboBoxItem Content="TIFF" Tag="Tiff" />
+                        </ComboBox>
+                        <CheckBox x:Name="StripImageMetadataBeforeUploadBox" Grid.Row="5" Grid.Column="1" Content="Strip image metadata before upload" Margin="0,0,0,8" />
+                    </Grid>
+                    <Border x:Name="CustomPalettePanel" Visibility="Collapsed" Background="#F8FAFC" BorderBrush="#D7DCE2" BorderThickness="1" CornerRadius="4" Padding="12" Margin="0,4,0,12">
+                        <StackPanel>
+                            <DockPanel Margin="0,0,0,8">
+                                <TextBlock Text="Custom palette" FontWeight="SemiBold" VerticalAlignment="Center" />
+                                <Button Content="Reset" DockPanel.Dock="Right" Width="72" Height="28" Click="ResetCustomPalette_Click" />
+                            </DockPanel>
+                            <TextBlock Text="Use #RRGGBB or #RRGGBBAA values." Foreground="#596273" Margin="0,0,0,8" />
+                            <Grid x:Name="CustomPaletteFieldsGrid" />
+                        </StackPanel>
+                    </Border>                    <CheckBox x:Name="FileUploadUseNamePatternBox" Content="Use file name pattern for uploads" Margin="0,0,0,6" />
+                    <CheckBox x:Name="FileUploadUseRandom16NameBox" Content="Use random 16-character upload names" Margin="0,0,0,6" />
+                    <Grid Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="120" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Name pattern" VerticalAlignment="Center" Margin="0,0,12,0" />
+                        <TextBox x:Name="FileNamePatternBox" Grid.Column="1" Height="30" Margin="0,0,8,0" ToolTip="Tokens: {date}, {time}, {datetime}, {rand}, {name}, {inc}" />
+                        <TextBox x:Name="FileNameAutoIncrementBox" Grid.Column="2" Height="30" ToolTip="Next {inc} value" />
+                    </Grid>
+                    <CheckBox x:Name="FileUploadReplaceProblematicCharactersBox" Content="Replace spaces and problematic filename characters" Margin="0,0,0,6" />
+                    <CheckBox x:Name="SmartRedactionBlackBoxBox" Content="Use black boxes for smart redaction" Margin="0,0,0,6" />
+                    <CheckBox x:Name="SmartRedactionFaceBox" Content="Detect faces during smart redaction" Margin="0,0,0,6" />
+                    <CheckBox x:Name="SmartRedactionBarcodeBox" Content="Detect QR/barcodes during smart redaction" Margin="0,0,0,6" />
+                    <Grid Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Minimum confidence" VerticalAlignment="Center" Margin="0,0,12,0" />
+                        <TextBox x:Name="SmartRedactionConfidenceBox" Grid.Column="1" Height="30" ToolTip="0.0 to 1.0" />
+                    </Grid>
+
+                    <TextBlock Text="Clipboard smart rules" FontWeight="SemiBold" Margin="0,18,0,8" />
+                    <CheckBox x:Name="ClipboardShortenUrlBox" Content="Shorten copied HTTP URLs" Margin="0,0,0,6" />
+                    <CheckBox x:Name="ClipboardUploadUrlContentsBox" Content="Upload copied HTTP URL contents" Margin="0,0,0,6" />
+                    <CheckBox x:Name="ClipboardShareUrlAfterUploadBox" Content="Copy copied HTTP URLs without uploading" Margin="0,0,0,6" />
+                    <CheckBox x:Name="ClipboardUploadTextContentsBox" Content="Upload copied plain text" Margin="0,0,0,6" />
+                    <CheckBox x:Name="ClipboardAutoIndexFolderBox" Content="Create folder index for copied folders" Margin="0,0,0,6" />
+
+                    <TextBlock Text="Capture options" FontWeight="SemiBold" Margin="0,18,0,8" />
+                    <CheckBox x:Name="CaptureIncludeCursorBox" Content="Include cursor while capturing" Margin="0,0,0,6" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Delay seconds" VerticalAlignment="Center" Margin="0,0,12,8" />
+                        <TextBox x:Name="CaptureDelaySecondsBox" Grid.Row="0" Grid.Column="1" Height="30" Margin="0,0,0,8" />
+                        <CheckBox x:Name="CaptureFixedRegionEnabledBox" Grid.Row="1" Grid.Column="1" Content="Use fixed region for region capture" Margin="0,0,0,8" />
+                        <UniformGrid Grid.Row="2" Grid.Column="1" Columns="4" Margin="0,0,0,8">
+                            <TextBox x:Name="CaptureFixedRegionXBox" Height="30" Margin="0,0,6,0" ToolTip="Fixed region X" />
+                            <TextBox x:Name="CaptureFixedRegionYBox" Height="30" Margin="0,0,6,0" ToolTip="Fixed region Y" />
+                            <TextBox x:Name="CaptureFixedRegionWidthBox" Height="30" Margin="0,0,6,0" ToolTip="Fixed region width" />
+                            <TextBox x:Name="CaptureFixedRegionHeightBox" Height="30" ToolTip="Fixed region height" />
+                        </UniformGrid>
+                        <CheckBox x:Name="CaptureShowInfoOverlayBox" Grid.Row="3" Grid.Column="1" Content="Show region info overlay" Margin="0,0,0,8" />
+                        <TextBlock Grid.Row="4" Grid.Column="0" Text="Snap sizes" VerticalAlignment="Center" Margin="0,0,12,8" />
+                        <TextBox x:Name="CaptureSnapSizesBox" Grid.Row="4" Grid.Column="1" Height="30" Margin="0,0,0,8" ToolTip="Comma-separated WIDTHxHEIGHT presets, e.g. 320x240, 640x480, 1280x720" />
+                        <CheckBox x:Name="CaptureMirrorToScreenshotsFolderBox" Grid.Row="5" Grid.Column="1" Content="Mirror captures to screenshots folder" Margin="0,0,0,8" />
+                        <TextBlock Grid.Row="6" Grid.Column="0" Text="Screenshots folder" VerticalAlignment="Center" Margin="0,0,12,8" />
+                        <DockPanel Grid.Row="6" Grid.Column="1" LastChildFill="True" Margin="0,0,0,8">
+                            <Button DockPanel.Dock="Right" Content="Browse" Width="84" Height="30" Margin="8,0,0,0" Click="BrowseScreenshotsFolder_Click" />
+                            <TextBox x:Name="CaptureScreenshotsFolderBox" Height="30" />
+                        </DockPanel>
+                    </Grid>
+                    <TextBlock Text="URL shortener" FontWeight="SemiBold" Margin="0,18,0,8" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Provider" VerticalAlignment="Center" Margin="0,0,12,8" />
+                        <ComboBox x:Name="ShortenerProviderBox" Grid.Row="0" Grid.Column="1" Height="30" Margin="0,0,0,8" SelectionChanged="ShortenerProviderBox_SelectionChanged">
+                            <ComboBoxItem Content="TinyURL (public)" Tag="tinyURL" />
+                            <ComboBoxItem Content="Custom GET template" Tag="customGetTemplate" />
+                        </ComboBox>
+                        <TextBlock x:Name="ShortenerTemplateLabel" Grid.Row="1" Grid.Column="0" Text="GET template" VerticalAlignment="Center" Margin="0,0,12,8" />
+                        <TextBox x:Name="ShortenerTemplateBox" Grid.Row="1" Grid.Column="1" Height="30" Margin="0,0,0,8" />
+                        <CheckBox x:Name="UrlRegexReplaceEnabledBox" Grid.Row="2" Grid.Column="1" Content="Enable URL regex replacement" Margin="0,0,0,8" Checked="UrlRegexReplaceEnabledBox_Changed" Unchecked="UrlRegexReplaceEnabledBox_Changed" />
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="Regex pattern" VerticalAlignment="Center" Margin="0,0,12,8" />
+                        <TextBox x:Name="UrlRegexPatternBox" Grid.Row="3" Grid.Column="1" Height="30" Margin="0,0,0,8" FontFamily="Consolas" ToolTip="https://(.*)" />
+                        <TextBlock Grid.Row="4" Grid.Column="0" Text="Replacement" VerticalAlignment="Center" Margin="0,0,12,8" />
+                        <TextBox x:Name="UrlRegexReplacementBox" Grid.Row="4" Grid.Column="1" Height="30" Margin="0,0,0,8" FontFamily="Consolas" ToolTip="https://cdn.example.com/$1" />
+                    </Grid>
+
+
+                    <TextBlock Text="Global hotkeys" FontWeight="SemiBold" Margin="0,18,0,8" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="230" />
+                            <ColumnDefinition Width="76" />
+                            <ColumnDefinition Width="70" />
+                            <ColumnDefinition Width="70" />
+                            <ColumnDefinition Width="70" />
+                            <ColumnDefinition Width="70" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Capture region and upload" VerticalAlignment="Center" Margin="0,0,12,6" />
+                        <ComboBox x:Name="CaptureRegionHotKeyBox" Grid.Row="0" Grid.Column="1" Height="28" Margin="0,0,8,6" />
+                        <CheckBox x:Name="CaptureRegionCtrlBox" Grid.Row="0" Grid.Column="2" Content="Ctrl" Margin="0,0,8,6" />
+                        <CheckBox x:Name="CaptureRegionShiftBox" Grid.Row="0" Grid.Column="3" Content="Shift" Margin="0,0,8,6" />
+                        <CheckBox x:Name="CaptureRegionAltBox" Grid.Row="0" Grid.Column="4" Content="Alt" Margin="0,0,8,6" />
+                        <CheckBox x:Name="CaptureRegionWinBox" Grid.Row="0" Grid.Column="5" Content="Win" Margin="0,0,0,6" />
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Capture region expiring" VerticalAlignment="Center" Margin="0,0,12,6" />
+                        <ComboBox x:Name="CaptureRegionExpiringHotKeyBox" Grid.Row="1" Grid.Column="1" Height="28" Margin="0,0,8,6" />
+                        <CheckBox x:Name="CaptureRegionExpiringCtrlBox" Grid.Row="1" Grid.Column="2" Content="Ctrl" Margin="0,0,8,6" />
+                        <CheckBox x:Name="CaptureRegionExpiringShiftBox" Grid.Row="1" Grid.Column="3" Content="Shift" Margin="0,0,8,6" />
+                        <CheckBox x:Name="CaptureRegionExpiringAltBox" Grid.Row="1" Grid.Column="4" Content="Alt" Margin="0,0,8,6" />
+                        <CheckBox x:Name="CaptureRegionExpiringWinBox" Grid.Row="1" Grid.Column="5" Content="Win" Margin="0,0,0,6" />
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Capture frozen region" VerticalAlignment="Center" Margin="0,0,12,6" />
+                        <ComboBox x:Name="CaptureRegionFrozenHotKeyBox" Grid.Row="2" Grid.Column="1" Height="28" Margin="0,0,8,6" />
+                        <CheckBox x:Name="CaptureRegionFrozenCtrlBox" Grid.Row="2" Grid.Column="2" Content="Ctrl" Margin="0,0,8,6" />
+                        <CheckBox x:Name="CaptureRegionFrozenShiftBox" Grid.Row="2" Grid.Column="3" Content="Shift" Margin="0,0,8,6" />
+                        <CheckBox x:Name="CaptureRegionFrozenAltBox" Grid.Row="2" Grid.Column="4" Content="Alt" Margin="0,0,8,6" />
+                        <CheckBox x:Name="CaptureRegionFrozenWinBox" Grid.Row="2" Grid.Column="5" Content="Win" Margin="0,0,0,6" />
+
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="Upload clipboard" VerticalAlignment="Center" Margin="0,0,12,6" />
+                        <ComboBox x:Name="UploadClipboardHotKeyBox" Grid.Row="3" Grid.Column="1" Height="28" Margin="0,0,8,6" />
+                        <CheckBox x:Name="UploadClipboardCtrlBox" Grid.Row="3" Grid.Column="2" Content="Ctrl" Margin="0,0,8,6" />
+                        <CheckBox x:Name="UploadClipboardShiftBox" Grid.Row="3" Grid.Column="3" Content="Shift" Margin="0,0,8,6" />
+                        <CheckBox x:Name="UploadClipboardAltBox" Grid.Row="3" Grid.Column="4" Content="Alt" Margin="0,0,8,6" />
+                        <CheckBox x:Name="UploadClipboardWinBox" Grid.Row="3" Grid.Column="5" Content="Win" Margin="0,0,0,6" />
+                    </Grid>
+                    <TextBlock x:Name="ValidationText" Foreground="#A12626" TextWrapping="Wrap" Margin="0,14,0,0" />
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+
+        <StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
+            <Button Content="Validate" Width="96" Height="34" Margin="0,0,8,0" Click="Validate_Click" />
+            <Button Content="Cancel" Width="96" Height="34" Margin="0,0,8,0" IsCancel="True" />
+            <Button Content="Save" Width="96" Height="34" Click="Save_Click" />
+        </StackPanel>
+    </Grid>
+</Window>
+
+
+
+
+
+

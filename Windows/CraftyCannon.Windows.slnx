@@ -1,0 +1,10 @@
+<Solution>
+  <Project Path="CraftyCannon.App/CraftyCannon.App.csproj" />
+  <Project Path="CraftyCannon.Capture/CraftyCannon.Capture.csproj" />
+  <Project Path="CraftyCannon.Core/CraftyCannon.Core.csproj" />
+  <Project Path="CraftyCannon.Editor/CraftyCannon.Editor.csproj" />
+  <Project Path="CraftyCannon.Ocr/CraftyCannon.Ocr.csproj" />
+  <Project Path="CraftyCannon.Security/CraftyCannon.Security.csproj" />
+  <Project Path="CraftyCannon.Tests/CraftyCannon.Tests.csproj" />
+  <Project Path="CraftyCannon.Upload/CraftyCannon.Upload.csproj" />
+</Solution>

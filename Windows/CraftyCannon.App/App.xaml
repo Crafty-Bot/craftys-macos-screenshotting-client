@@ -1,0 +1,27 @@
+﻿<Application x:Class="CraftyCannon.App.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:CraftyCannon.App">
+    <Application.Resources>
+        <SolidColorBrush x:Key="CraftyWindowBackgroundBrush" Color="#F4F5F7" />
+        <SolidColorBrush x:Key="CraftyRailBackgroundBrush" Color="#20242B" />
+        <SolidColorBrush x:Key="CraftyRailTextBrush" Color="#FFFFFF" />
+        <SolidColorBrush x:Key="CraftyContextBackgroundBrush" Color="#FFFFFF" />
+        <SolidColorBrush x:Key="CraftyPanelBackgroundBrush" Color="#FFFFFF" />
+        <SolidColorBrush x:Key="CraftyPanelMutedBackgroundBrush" Color="#EEF2F6" />
+        <SolidColorBrush x:Key="CraftyBorderBrush" Color="#D7DCE2" />
+        <SolidColorBrush x:Key="CraftyPrimaryTextBrush" Color="#20242B" />
+        <SolidColorBrush x:Key="CraftySecondaryTextBrush" Color="#596273" />
+        <SolidColorBrush x:Key="CraftyAccentBrush" Color="#F28C33" />
+        <SolidColorBrush x:Key="CraftyButtonBackgroundBrush" Color="#F28C33" />
+        <SolidColorBrush x:Key="CraftyButtonBorderBrush" Color="#C56D25" />
+        <SolidColorBrush x:Key="CraftyButtonTextBrush" Color="#FFFFFF" />
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="{DynamicResource CraftyButtonBackgroundBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource CraftyButtonBorderBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource CraftyButtonTextBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="10,4" />
+        </Style>
+    </Application.Resources>
+</Application>

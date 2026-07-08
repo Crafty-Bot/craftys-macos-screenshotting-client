@@ -1,0 +1,95 @@
+<Window x:Class="CraftyCannon.App.DirectoryIndexerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Directory Indexer"
+        Width="820"
+        Height="720"
+        MinWidth="720"
+        MinHeight="620"
+        WindowStartupLocation="CenterOwner"
+        Background="#F4F6F8">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="0,0,0,12">
+            <TextBlock Text="Directory Indexer" FontSize="18" FontWeight="SemiBold" Foreground="#151922" />
+            <TextBlock Text="Generate a text index of a folder (optionally including subdirectories)."
+                       Margin="0,4,0,0"
+                       Foreground="#5C6675" />
+        </StackPanel>
+
+        <Border Grid.Row="1" BorderBrush="#D7DCE2" BorderThickness="0,1,0,0" Margin="0,0,0,12" />
+
+        <DockPanel Grid.Row="2" LastChildFill="False" Margin="0,0,0,8">
+            <Button Content="Choose Folder..." Height="32" MinWidth="120" Click="ChooseFolder_Click" />
+            <CheckBox Content="Include subdirectories"
+                      Margin="12,0,0,0"
+                      VerticalAlignment="Center"
+                      IsChecked="True"
+                      x:Name="IncludeSubdirectoriesCheckBox" />
+            <ProgressBar x:Name="WorkingProgress"
+                         Width="96"
+                         Height="8"
+                         Margin="12,0,0,0"
+                         VerticalAlignment="Center"
+                         IsIndeterminate="True"
+                         Visibility="Collapsed" />
+        </DockPanel>
+
+        <TextBlock Grid.Row="3"
+                   x:Name="FolderPathText"
+                   TextWrapping="Wrap"
+                   MaxHeight="34"
+                   Margin="0,0,0,12"
+                   FontFamily="Consolas"
+                   FontSize="11"
+                   Foreground="#5C6675" />
+
+        <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,0,0,10">
+            <Button x:Name="GenerateButton"
+                    Content="Generate Index"
+                    Height="34"
+                    MinWidth="130"
+                    Click="Generate_Click"
+                    IsEnabled="False" />
+            <Button x:Name="CopyTextButton"
+                    Content="Copy Text"
+                    Height="34"
+                    MinWidth="100"
+                    Margin="8,0,0,0"
+                    Click="CopyText_Click"
+                    IsEnabled="False" />
+            <Button x:Name="RevealFileButton"
+                    Content="Reveal File"
+                    Height="34"
+                    MinWidth="100"
+                    Margin="8,0,0,0"
+                    Click="RevealFile_Click"
+                    IsEnabled="False" />
+            <TextBlock x:Name="StatusText"
+                       Margin="12,0,0,0"
+                       VerticalAlignment="Center"
+                       Foreground="#5C6675" />
+        </StackPanel>
+
+        <Grid Grid.Row="5">
+            <TextBox x:Name="OutputTextBox"
+                     AcceptsReturn="True"
+                     AcceptsTab="True"
+                     VerticalScrollBarVisibility="Auto"
+                     HorizontalScrollBarVisibility="Auto"
+                     TextWrapping="NoWrap"
+                     FontFamily="Consolas"
+                     FontSize="12"
+                     BorderBrush="#C9D0DA"
+                     Background="#FFFFFF" />
+        </Grid>
+    </Grid>
+</Window>

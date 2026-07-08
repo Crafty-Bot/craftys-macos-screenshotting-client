@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\CraftyCannon.Core\CraftyCannon.Core.csproj" />
+    <ProjectReference Include="..\CraftyCannon.Security\CraftyCannon.Security.csproj" />
+    <ProjectReference Include="..\CraftyCannon.Upload\CraftyCannon.Upload.csproj" />
+    <ProjectReference Include="..\CraftyCannon.Ocr\CraftyCannon.Ocr.csproj" />
+    <ProjectReference Include="..\CraftyCannon.Capture\CraftyCannon.Capture.csproj" />
+    <ProjectReference Include="..\CraftyCannon.App\CraftyCannon.App.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+</Project>

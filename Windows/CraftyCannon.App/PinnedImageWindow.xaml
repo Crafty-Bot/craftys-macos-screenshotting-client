@@ -1,0 +1,38 @@
+<Window x:Class="CraftyCannon.App.PinnedImageWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Pinned"
+        Width="640"
+        Height="420"
+        MinWidth="220"
+        MinHeight="160"
+        WindowStyle="None"
+        ResizeMode="CanResizeWithGrip"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Topmost="True"
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner">
+    <Grid Margin="8" MouseLeftButtonDown="Root_MouseLeftButtonDown" MouseEnter="Root_MouseEnter" MouseLeave="Root_MouseLeave">
+        <Border Background="#F4FFFFFF"
+                BorderBrush="#2E000000"
+                BorderThickness="1"
+                CornerRadius="10">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="18" ShadowDepth="2" Opacity="0.28" />
+            </Border.Effect>
+        </Border>
+        <Image x:Name="PinnedImage"
+               Stretch="Uniform"
+               Margin="10" />
+        <StackPanel x:Name="ControlPanel"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Margin="10"
+                    Opacity="0">
+            <Button Content="Copy" Height="26" MinWidth="58" Margin="0,0,6,0" Click="CopyButton_Click" />
+            <Button Content="Close" Height="26" MinWidth="58" Click="CloseButton_Click" />
+        </StackPanel>
+    </Grid>
+</Window>

@@ -1,0 +1,97 @@
+<Window x:Class="CraftyCannon.App.QrCodeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="QR Code"
+        Width="720"
+        Height="680"
+        MinWidth="640"
+        MinHeight="560"
+        WindowStartupLocation="CenterOwner"
+        Background="#F4F6F8">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="0,0,0,12">
+            <TextBlock Text="QR Code" FontSize="18" FontWeight="SemiBold" Foreground="#151922" />
+            <TextBlock Text="Generate and decode QR codes from text or images."
+                       Margin="0,4,0,0"
+                       Foreground="#5C6675" />
+        </StackPanel>
+
+        <Border Grid.Row="1" BorderBrush="#D7DCE2" BorderThickness="0,1,0,0" Margin="0,0,0,12" />
+
+        <StackPanel Grid.Row="2" Margin="0,0,0,14">
+            <TextBlock Text="Generate" FontSize="12" FontWeight="SemiBold" Foreground="#20242B" Margin="0,0,0,8" />
+            <TextBox x:Name="InputTextBox"
+                     Height="32"
+                     VerticalContentAlignment="Center"
+                     TextChanged="InputTextBox_TextChanged" />
+            <TextBlock x:Name="InputPlaceholder"
+                       Text="Text or URL"
+                       Margin="8,-25,0,9"
+                       Foreground="#8A94A3"
+                       IsHitTestVisible="False" />
+
+            <DockPanel Margin="0,8,0,0">
+                <Border Width="220"
+                        Height="220"
+                        Background="#ECEFF3"
+                        BorderBrush="#C9D0DA"
+                        BorderThickness="1"
+                        CornerRadius="8">
+                    <Grid Margin="8">
+                        <Image x:Name="QrImage" Stretch="Uniform" RenderOptions.BitmapScalingMode="NearestNeighbor" />
+                        <TextBlock x:Name="EmptyQrText"
+                                   Text="Enter text to generate"
+                                   Foreground="#6A7482"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center" />
+                    </Grid>
+                </Border>
+
+                <StackPanel Margin="12,0,0,0" DockPanel.Dock="Left">
+                    <Button x:Name="CopyQrButton" Content="Copy QR Image" Height="32" MinWidth="130" Click="CopyQrButton_Click" IsEnabled="False" />
+                    <Button x:Name="SavePngButton" Content="Save PNG..." Height="32" MinWidth="130" Margin="0,8,0,0" Click="SavePngButton_Click" IsEnabled="False" />
+                    <TextBlock x:Name="GenerateStatusText" Margin="0,10,0,0" Foreground="#5C6675" TextWrapping="Wrap" />
+                </StackPanel>
+            </DockPanel>
+        </StackPanel>
+
+        <Border Grid.Row="3" BorderBrush="#D7DCE2" BorderThickness="0,1,0,0" Margin="0,0,0,12" />
+
+        <Grid Grid.Row="4">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Text="Decode" FontSize="12" FontWeight="SemiBold" Foreground="#20242B" Margin="0,0,0,8" />
+            <WrapPanel Grid.Row="1" Margin="0,0,0,8">
+                <Button Content="Decode Clipboard Image" Height="32" MinWidth="160" Margin="0,0,8,8" Click="DecodeClipboardButton_Click" />
+                <Button Content="Decode Image File..." Height="32" MinWidth="150" Margin="0,0,8,8" Click="DecodeFileButton_Click" />
+                <Button x:Name="CopyDecodedButton" Content="Copy Decoded" Height="32" MinWidth="120" Margin="0,0,8,8" Click="CopyDecodedButton_Click" IsEnabled="False" />
+            </WrapPanel>
+            <TextBlock Grid.Row="2" x:Name="DecodeStatusText" Margin="0,0,0,8" TextWrapping="Wrap" />
+            <TextBox Grid.Row="3"
+                     x:Name="DecodedTextBox"
+                     AcceptsReturn="True"
+                     AcceptsTab="True"
+                     VerticalScrollBarVisibility="Auto"
+                     HorizontalScrollBarVisibility="Auto"
+                     TextWrapping="NoWrap"
+                     TextChanged="DecodedTextBox_TextChanged"
+                     FontFamily="Consolas"
+                     FontSize="12"
+                     BorderBrush="#C9D0DA"
+                     Background="#FFFFFF" />
+        </Grid>
+    </Grid>
+</Window>

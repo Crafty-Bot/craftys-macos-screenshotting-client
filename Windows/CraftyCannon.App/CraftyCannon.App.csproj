@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\CraftyCannon.Core\CraftyCannon.Core.csproj" />
+    <ProjectReference Include="..\CraftyCannon.Security\CraftyCannon.Security.csproj" />
+    <ProjectReference Include="..\CraftyCannon.Capture\CraftyCannon.Capture.csproj" />
+    <ProjectReference Include="..\CraftyCannon.Editor\CraftyCannon.Editor.csproj" />
+    <ProjectReference Include="..\CraftyCannon.Ocr\CraftyCannon.Ocr.csproj" />
+    <ProjectReference Include="..\CraftyCannon.Upload\CraftyCannon.Upload.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="ZXing.Net" Version="0.16.11" />
+  </ItemGroup>
+</Project>

@@ -31,6 +31,72 @@ jobs:
             -destination 'platform=macOS' \
             CODE_SIGNING_ALLOWED=NO
 
+  windows-test:
+    name: Windows build & tests
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Build Windows solution
+        run: dotnet build Windows\CraftyCannon.Windows.slnx --verbosity minimal
+
+      - name: Run Windows tests
+        run: dotnet run --no-build --project Windows\CraftyCannon.Tests\CraftyCannon.Tests.csproj
+
+      - name: Parse release script
+        shell: pwsh
+        run: |
+          $errors = $null
+          [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path Windows\build-release.ps1), [ref]$null, [ref]$errors) | Out-Null
+          if ($errors.Count) {
+            $errors | ForEach-Object { Write-Error $_.Message }
+            exit 1
+          }
+
+      - name: Smoke signed Windows release script
+        timeout-minutes: 10
+        shell: pwsh
+        run: |
+          $passwordText = [Guid]::NewGuid().ToString('N')
+          $password = ConvertTo-SecureString $passwordText -AsPlainText -Force
+          $subject = 'CN=CraftyCannon CI Test Publisher'
+          $pfxPath = Join-Path $env:RUNNER_TEMP 'craftycannon-ci-codesign.pfx'
+          $cerPath = Join-Path $env:RUNNER_TEMP 'craftycannon-ci-codesign.cer'
+          $outputRoot = Join-Path $env:RUNNER_TEMP 'craftycannon-release-smoke'
+          $cert = New-SelfSignedCertificate `
+            -Type CodeSigningCert `
+            -Subject $subject `
+            -CertStoreLocation Cert:\CurrentUser\My `
+            -KeyAlgorithm RSA `
+            -KeyLength 2048 `
+            -KeyExportPolicy Exportable `
+            -NotAfter (Get-Date).AddDays(2)
+          try {
+            Export-PfxCertificate -Cert $cert -FilePath $pfxPath -Password $password -Force | Out-Null
+            Export-Certificate -Cert $cert -FilePath $cerPath | Out-Null
+            .\Windows\build-release.ps1 `
+              -CertificatePath $pfxPath `
+              -CertificatePassword $passwordText `
+              -ExpectedPublisherSubject 'CraftyCannon CI Test Publisher' `
+              -AllowTestCertificate `
+              -SkipTimestampForTestCertificate `
+              -SkipTrustVerificationForTestCertificate `
+              -OutputRoot $outputRoot
+          }
+          finally {
+            Remove-Item -LiteralPath $pfxPath -Force -ErrorAction SilentlyContinue
+            Remove-Item -LiteralPath $cerPath -Force -ErrorAction SilentlyContinue
+            Remove-Item -LiteralPath $outputRoot -Recurse -Force -ErrorAction SilentlyContinue
+            Get-ChildItem Cert:\CurrentUser\My, Cert:\CurrentUser\Root, Cert:\CurrentUser\TrustedPublisher -ErrorAction SilentlyContinue |
+              Where-Object Thumbprint -eq $cert.Thumbprint |
+              Remove-Item -Force -ErrorAction SilentlyContinue
+          }
+
   release-build:
     name: Release build script
     runs-on: macos-latest

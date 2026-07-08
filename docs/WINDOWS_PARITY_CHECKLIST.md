@@ -106,7 +106,7 @@ This checklist tracks the 1:1 Windows port against the current macOS app behavio
 - [x] Redaction policy defaults to Ask before upload.
 - [x] Upload blocks image uploads/reuploads when redaction policy requires scanning but Windows smart redaction detection is unavailable, so configured protection does not silently bypass; normal image uploads and reuploads now run face and QR/barcode ask/auto redaction when the detector is available.
 - [x] Temp cleanup deletes only canonical files under `%TEMP%` or app-managed directories and rejects reparse-point/symlink/junction escape paths.
-- [ ] Release artifacts are Authenticode-signed and timestamped. `Windows\build-release.ps1` now cleans stale publish output, validates production certificate shape, enforces Authenticode signing, RFC 3161 timestamp verification, signature verification, and SHA-256 signed/package manifests for publish outputs, with CI smoke coverage through a temporary test certificate, but this remains unchecked until run with a production certificate for actual release artifacts.
+- [ ] Release artifacts are Authenticode-signed and timestamped. `Windows\build-release.ps1` now cleans stale publish output, validates production certificate shape, enforces Authenticode signing, RFC 3161 timestamp verification, signature verification, and SHA-256 signed/package manifests for production publish outputs. CI smoke coverage signs/verifies embedded signatures through a temporary test certificate with external timestamping and trust-store import skipped by guarded test-only switches, but this remains unchecked until run with a production certificate for actual release artifacts.
 
 ## Editor
 

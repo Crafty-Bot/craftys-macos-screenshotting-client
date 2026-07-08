@@ -59,6 +59,7 @@ jobs:
           }
 
       - name: Smoke signed Windows release script
+        timeout-minutes: 10
         shell: pwsh
         run: |
           $passwordText = [Guid]::NewGuid().ToString('N')
@@ -78,13 +79,13 @@ jobs:
           try {
             Export-PfxCertificate -Cert $cert -FilePath $pfxPath -Password $password -Force | Out-Null
             Export-Certificate -Cert $cert -FilePath $cerPath | Out-Null
-            Import-Certificate -FilePath $cerPath -CertStoreLocation Cert:\CurrentUser\Root | Out-Null
-            Import-Certificate -FilePath $cerPath -CertStoreLocation Cert:\CurrentUser\TrustedPublisher | Out-Null
             .\Windows\build-release.ps1 `
               -CertificatePath $pfxPath `
               -CertificatePassword $passwordText `
               -ExpectedPublisherSubject 'CraftyCannon CI Test Publisher' `
               -AllowTestCertificate `
+              -SkipTimestampForTestCertificate `
+              -SkipTrustVerificationForTestCertificate `
               -OutputRoot $outputRoot
           }
           finally {

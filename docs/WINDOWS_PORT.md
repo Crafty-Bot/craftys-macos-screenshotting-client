@@ -25,7 +25,7 @@ This is the working implementation plan for a 1:1 Windows port of CraftyCannon's
 - Clipboard: WPF clipboard APIs plus Win32 format handling where exact image/file/drop-list behavior requires it.
 - Notifications: local notification parity through tray/in-app fallback for unpackaged dev builds; native Windows toast packaging remains a release-hardening improvement.
 - OCR/redaction: keep the PII detector contract independent. OCR indexing/admin plumbing is wired behind a recognizer abstraction; native extraction uses Windows OCR, `Windows.Media.FaceAnalysis` for faces, and ZXing.Net for QR/barcodes.
-- Packaging: `Windows\build-release.ps1` validates the signing certificate, cleans publish output, publishes the WPF app, Authenticode-signs and timestamp-verifies produced executables/libraries with a supplied certificate, verifies each signature, emits SHA-256 signed-file/package manifests, and creates a signed zip; installer/MSIX wrapping remains a release distribution choice.
+- Packaging: `Windows\build-release.ps1` validates the signing certificate, cleans publish output, publishes the WPF app, Authenticode-signs and timestamp-verifies produced executables/libraries with a supplied production certificate, verifies each signature, emits SHA-256 signed-file/package manifests, and creates a signed zip; the CI throwaway-certificate smoke signs/verifies embedded signatures without external timestamping or trust-store import, and installer/MSIX wrapping remains a release distribution choice.
 
 ## Current scaffold
 
@@ -74,7 +74,7 @@ The solution currently includes:
 7. Smart Redaction and OCR indexing parity. Text PII classifier parity, editor face/QR/barcode detection/redaction, normal image upload and reupload face/QR/barcode ask/auto redaction, native Windows OCR extraction, and OCR indexing/admin workflows are wired.
 8. Utility tools: Color Picker, QR Code, Hash Checker, Directory Indexer, and multiple pinned image windows are wired.
 9. Watch folders are wired with persisted rules, stability debounce, and upload workflow routing. Cloudflare allowlist automation is wired with Credential Manager token storage, managed IP-list replacement, interval refresh, network-change refresh, Preferences controls, and utility/editor local notification parity via tray fallback.
-10. Signed release packaging and migration/import documentation. Certificate preflight, Authenticode signing/timestamp verification, SHA-256 manifest generation, Windows CI build/test gates, and a temporary-cert signed-release CI smoke test are wired; production release still requires an issued code-signing certificate and installer/MSIX decision.
+10. Signed release packaging and migration/import documentation. Certificate preflight, Authenticode signing/timestamp verification for production, SHA-256 manifest generation, Windows CI build/test gates, and a temporary-cert signed-release CI smoke test are wired; the CI smoke skips external timestamping and trust-store import by guarded test-only switches, and production release still requires an issued code-signing certificate and installer/MSIX decision.
 
 ## High-risk areas
 

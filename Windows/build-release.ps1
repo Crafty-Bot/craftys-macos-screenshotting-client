@@ -1,4 +1,4 @@
-﻿[CmdletBinding(DefaultParameterSetName = 'Store')]
+[CmdletBinding(DefaultParameterSetName = 'Store')]
 param(
     [ValidateSet('Release', 'Debug')]
     [string]$Configuration = 'Release',
@@ -21,6 +21,10 @@ param(
     [switch]$AllowTestCertificate,
 
     [switch]$IncludeDebugSymbols,
+
+    [switch]$SkipTimestampForTestCertificate,
+
+    [switch]$SkipTrustVerificationForTestCertificate,
 
     [string]$TimestampUrl = 'http://timestamp.digicert.com',
 
@@ -47,12 +51,17 @@ function Resolve-SignTool {
 
     $kitsRoot = Join-Path ${env:ProgramFiles(x86)} 'Windows Kits\10\bin'
     if (Test-Path -LiteralPath $kitsRoot) {
-        $candidate = Get-ChildItem -LiteralPath $kitsRoot -Recurse -Filter signtool.exe |
-            Where-Object { $_.FullName -match '\\x64\\signtool\.exe$' } |
-            Sort-Object FullName -Descending |
-            Select-Object -First 1
+        $candidatePaths = @(
+            Get-ChildItem -LiteralPath $kitsRoot -Directory |
+                Where-Object { $_.Name -match '^\d+\.\d+\.\d+\.\d+$' } |
+                Sort-Object Name -Descending |
+                ForEach-Object { Join-Path $_.FullName 'x64\signtool.exe' }
+            Join-Path $kitsRoot 'x64\signtool.exe'
+        )
+
+        $candidate = $candidatePaths | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
         if ($candidate) {
-            return $candidate.FullName
+            return (Resolve-Path -LiteralPath $candidate).Path
         }
     }
 
@@ -118,6 +127,23 @@ function Test-CodeSigningCertificate {
     }
 }
 
+function Get-RelativePackagePath {
+    param(
+        [string]$Root,
+        [string]$Path
+    )
+
+    if ([System.IO.Path].GetMethod('GetRelativePath', [type[]]@([string], [string]))) {
+        return [System.IO.Path]::GetRelativePath($Root, $Path).Replace('\', '/')
+    }
+
+    $rootFull = [System.IO.Path]::GetFullPath($Root).TrimEnd([System.IO.Path]::DirectorySeparatorChar, [System.IO.Path]::AltDirectorySeparatorChar) + [System.IO.Path]::DirectorySeparatorChar
+    $pathFull = [System.IO.Path]::GetFullPath($Path)
+    $rootUri = [Uri]::new($rootFull)
+    $pathUri = [Uri]::new($pathFull)
+    return [Uri]::UnescapeDataString($rootUri.MakeRelativeUri($pathUri).ToString()).Replace('/', '/')
+}
+
 function Get-PackageFileManifest {
     param([string]$Root)
 
@@ -127,7 +153,7 @@ function Get-PackageFileManifest {
         ForEach-Object {
             $hash = Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256
             [pscustomobject]@{
-                path = [System.IO.Path]::GetRelativePath($Root, $_.FullName).Replace('\', '/')
+                path = Get-RelativePackagePath -Root $Root -Path $_.FullName
                 sha256 = $hash.Hash.ToLowerInvariant()
                 length = $_.Length
             }
@@ -167,6 +193,16 @@ else {
 
 Test-CodeSigningCertificate -Certificate $certificate -ExpectedSubject $ExpectedPublisherSubject -AllowTest $AllowTestCertificate.IsPresent
 
+if ($SkipTimestampForTestCertificate.IsPresent -and -not $AllowTestCertificate.IsPresent) {
+    throw 'SkipTimestampForTestCertificate may only be used with AllowTestCertificate.'
+}
+
+if ($SkipTrustVerificationForTestCertificate.IsPresent -and -not $AllowTestCertificate.IsPresent) {
+    throw 'SkipTrustVerificationForTestCertificate may only be used with AllowTestCertificate.'
+}
+
+$useTimestamp = -not $SkipTimestampForTestCertificate.IsPresent
+
 if (Test-Path -LiteralPath $publishDir) {
     Remove-Item -LiteralPath $publishDir -Recurse -Force
 }
@@ -197,7 +233,11 @@ $signedManifest = @()
 
 foreach ($target in $signTargets) {
     if ($PSCmdlet.ParameterSetName -eq 'Pfx') {
-        $args = @('sign', '/fd', 'SHA256', '/tr', $TimestampUrl, '/td', 'SHA256', '/f', (Resolve-Path -LiteralPath $CertificatePath).Path)
+        $args = @('sign', '/fd', 'SHA256')
+        if ($useTimestamp) {
+            $args += @('/tr', $TimestampUrl, '/td', 'SHA256')
+        }
+        $args += @('/f', (Resolve-Path -LiteralPath $CertificatePath).Path)
         if ($CertificatePassword) {
             $args += @('/p', $CertificatePassword)
         }
@@ -205,14 +245,33 @@ foreach ($target in $signTargets) {
         Invoke-Checked -FilePath $signtool -Arguments $args
     }
     else {
-        Invoke-Checked -FilePath $signtool -Arguments @('sign', '/fd', 'SHA256', '/tr', $TimestampUrl, '/td', 'SHA256', '/sha1', $certificate.Thumbprint, $target.FullName)
+        $args = @('sign', '/fd', 'SHA256')
+        if ($useTimestamp) {
+            $args += @('/tr', $TimestampUrl, '/td', 'SHA256')
+        }
+        $args += @('/sha1', $certificate.Thumbprint, $target.FullName)
+        Invoke-Checked -FilePath $signtool -Arguments $args
     }
 
-    Invoke-Checked -FilePath $signtool -Arguments @('verify', '/pa', '/all', $target.FullName)
-    Invoke-Checked -FilePath $signtool -Arguments @('verify', '/pa', '/all', '/tw', $target.FullName)
+    if ($SkipTrustVerificationForTestCertificate.IsPresent) {
+        $signature = Get-AuthenticodeSignature -FilePath $target.FullName
+        if (-not $signature.SignerCertificate) {
+            throw "Signed file $($target.FullName) did not contain an Authenticode signer certificate."
+        }
+
+        if ($signature.SignerCertificate.Thumbprint -ne $certificate.Thumbprint) {
+            throw "Signed file $($target.FullName) signer thumbprint $($signature.SignerCertificate.Thumbprint) did not match expected $($certificate.Thumbprint)."
+        }
+    }
+    else {
+        Invoke-Checked -FilePath $signtool -Arguments @('verify', '/pa', '/all', $target.FullName)
+        if ($useTimestamp) {
+            Invoke-Checked -FilePath $signtool -Arguments @('verify', '/pa', '/all', '/tw', $target.FullName)
+        }
+    }
     $hash = Get-FileHash -LiteralPath $target.FullName -Algorithm SHA256
     $signedManifest += [pscustomobject]@{
-        path = [System.IO.Path]::GetRelativePath($publishDir, $target.FullName).Replace('\', '/')
+        path = Get-RelativePackagePath -Root $publishDir -Path $target.FullName
         sha256 = $hash.Hash.ToLowerInvariant()
         length = $target.Length
     }
@@ -223,7 +282,8 @@ $manifest = [pscustomobject]@{
     generatedAt = (Get-Date).ToUniversalTime().ToString('O')
     runtime = $Runtime
     configuration = $Configuration
-    timestampUrl = $TimestampUrl
+    timestampUrl = if ($useTimestamp) { $TimestampUrl } else { $null }
+    timestampVerificationSkipped = -not $useTimestamp
     certificateThumbprint = $certificate.Thumbprint
     certificateSubject = $certificate.Subject
     signedFiles = $signedManifest

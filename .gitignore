@@ -8,13 +8,19 @@ DerivedData/
 *.profraw
 xcuserdata/
 
+# .NET build output
+bin/
+obj/
+
 # Packaged app artifacts
 dist/
-*.app
+*.app/
+!Windows/CraftyCannon.App/
 *.zip
 
 # Local/editor state
 .swiftpm/
+.claude/settings.local.json
 .vscode/
 .idea/
 

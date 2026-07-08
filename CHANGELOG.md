@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Added the unsigned Windows port workspace, including the WPF tray app, upload/capture/redaction services, Windows documentation, and CI build/test coverage.
 - Smart Redaction can now render detected regions as either pixelation or solid
   black boxes. Settings -> Advanced includes a `Use black boxes for auto
   redaction` toggle; leaving it off keeps the existing pixelated behavior.
@@ -59,7 +60,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.2.0] - 2026-06-27
 
 ### Added
-- **Smart Redaction** — a Vision/ImageIO-backed detector that finds sensitive
+- **Smart Redaction** â€” a Vision/ImageIO-backed detector that finds sensitive
   regions in a capture and pixelates them. Detects faces, barcodes, and a wide
   range of text PII via OCR: email addresses, phone numbers, credit card
   numbers, IPv4/IPv6 and MAC addresses, URLs/domains, API keys, AWS access keys,

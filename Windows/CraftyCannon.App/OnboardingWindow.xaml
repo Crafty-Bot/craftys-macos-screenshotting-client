@@ -1,0 +1,88 @@
+<Window x:Class="CraftyCannon.App.OnboardingWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Welcome to CraftyCannon" Height="520" Width="680" MinHeight="500" MinWidth="640"
+        WindowStartupLocation="CenterOwner" ResizeMode="CanResize">
+    <Grid Background="#F4F5F7" Margin="18">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="0,0,0,16">
+            <TextBlock Text="Welcome to CraftyCannon" FontSize="24" FontWeight="SemiBold" Foreground="#20242B" />
+            <TextBlock Text="Choose a destination setup to get started." Foreground="#596273" Margin="0,6,0,0" />
+        </StackPanel>
+
+        <Border Grid.Row="1" Background="White" BorderBrush="#D7DCE2" BorderThickness="1" CornerRadius="6" Padding="16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Setup" VerticalAlignment="Center" Margin="0,0,12,8" />
+                <ComboBox x:Name="PresetBox" Grid.Row="0" Grid.Column="1" Height="30" Margin="0,0,0,8" SelectionChanged="PresetBox_SelectionChanged">
+                    <ComboBoxItem Content="Zipline v4" Tag="Zipline" />
+                    <ComboBoxItem Content="S3-compatible" Tag="S3" />
+                    <ComboBoxItem Content="Custom" Tag="Custom" />
+                </ComboBox>
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Profile" VerticalAlignment="Center" Margin="0,0,12,8" />
+                <TextBox x:Name="ProfileNameBox" Grid.Row="1" Grid.Column="1" Height="30" Margin="0,0,0,8" />
+
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Backend" VerticalAlignment="Center" Margin="0,0,12,8" />
+                <ComboBox x:Name="BackendBox" Grid.Row="2" Grid.Column="1" Height="30" Margin="0,0,0,8" SelectionChanged="BackendBox_SelectionChanged">
+                    <ComboBoxItem Content="Zipline v4" Tag="ZiplineV4" />
+                    <ComboBoxItem Content="S3-compatible" Tag="S3Compatible" />
+                </ComboBox>
+
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="Endpoint" VerticalAlignment="Center" Margin="0,0,12,8" />
+                <TextBox x:Name="EndpointBox" Grid.Row="3" Grid.Column="1" Height="30" Margin="0,0,0,8" />
+
+                <TextBlock x:Name="ZiplineTokenLabel" Grid.Row="4" Grid.Column="0" Text="API Secret" VerticalAlignment="Center" Margin="0,0,12,8" />
+                <PasswordBox x:Name="ZiplineTokenBox" Grid.Row="4" Grid.Column="1" Height="30" Margin="0,0,0,8" />
+
+                <TextBlock x:Name="S3RegionLabel" Grid.Row="5" Grid.Column="0" Text="S3 Region" VerticalAlignment="Center" Margin="0,0,12,8" />
+                <TextBox x:Name="S3RegionBox" Grid.Row="5" Grid.Column="1" Height="30" Margin="0,0,0,8" />
+
+                <TextBlock x:Name="S3BucketLabel" Grid.Row="6" Grid.Column="0" Text="S3 Bucket" VerticalAlignment="Center" Margin="0,0,12,8" />
+                <TextBox x:Name="S3BucketBox" Grid.Row="6" Grid.Column="1" Height="30" Margin="0,0,0,8" />
+
+                <TextBlock x:Name="S3AccessLabel" Grid.Row="7" Grid.Column="0" Text="S3 Access Key" VerticalAlignment="Center" Margin="0,0,12,8" />
+                <TextBox x:Name="S3AccessBox" Grid.Row="7" Grid.Column="1" Height="30" Margin="0,0,0,8" />
+
+                <TextBlock x:Name="S3SecretLabel" Grid.Row="8" Grid.Column="0" Text="S3 Secret Key" VerticalAlignment="Center" Margin="0,0,12,8" />
+                <PasswordBox x:Name="S3SecretBox" Grid.Row="8" Grid.Column="1" Height="30" Margin="0,0,0,8" />
+
+                <TextBlock x:Name="S3SessionLabel" Grid.Row="9" Grid.Column="0" Text="S3 Session Token" VerticalAlignment="Center" Margin="0,0,12,0" />
+                <PasswordBox x:Name="S3SessionBox" Grid.Row="9" Grid.Column="1" Height="30" />
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="2" Margin="0,14,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="ValidationText" Grid.Column="0" Foreground="#A12626" TextWrapping="Wrap" VerticalAlignment="Center" />
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Cancel" Width="96" Height="34" Margin="0,0,8,0" IsCancel="True" />
+                <Button Content="Continue" Width="104" Height="34" Click="Continue_Click" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>
